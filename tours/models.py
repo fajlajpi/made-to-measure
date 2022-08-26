@@ -11,6 +11,7 @@ class Tour(models.Model):
     # start_location = ForeignKey  # Location (name, gps coords, maybe more) in a separate model - DRY
     # categories = ManyToMany  # Categories of the Tour (Many-To-Many relationship)
     # description = TextField  # Tour Description
+    # length = DecimalField  # Tour length in hours
     pass
 
 class Stop(models.Model):
