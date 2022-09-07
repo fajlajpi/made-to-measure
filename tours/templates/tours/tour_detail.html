@@ -1,0 +1,13 @@
+{% extends 'tours/base.html' %}
+
+{% block content %}    
+        <article class="tour">
+            <h2><a href="{% url 'tour_detail' pk=tour.pk %}">{{ tour.name }}</a></h2>
+            <ul>
+                <li><strong>Tour length</strong>: {{ tour.length }}</li>
+                <li><strong>Starting point</strong>: {{ tour.start_location }}</li>
+                <li><strong>Categories</strong>: {{ tour.categories }}</li>
+            </ul>
+            <p>{{ tour.description|linebreaksbr }}</p>
+        </article>
+{% endblock %}
