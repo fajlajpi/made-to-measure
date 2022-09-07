@@ -46,16 +46,16 @@ class Stop(models.Model):
     order = models.SmallIntegerField()
 
     def __str__(self):
-        return self.name
+        return f"[{self.tour.name_short}] #{self.order}: {self.name}"
 
 class Block(models.Model):
     name = models.CharField(max_length=200)
     stop = models.ForeignKey(Stop, on_delete=models.CASCADE)
     order = models.PositiveSmallIntegerField()
-    keywords = models.ManyToManyField(Keyword)
+    keywords = models.ManyToManyField(Keyword, blank=True)
     skippable = models.BooleanField(default=True)
     text = models.TextField()
     # audio TODO: Look up how to upload sound clips to blocks and construct the tour out of them
 
     def __str__(self):
-        return self.name
+        return f"[{self.stop.tour.name_short}] [Stop #{self.stop.order}: {self.stop.name}] #{self.order}: {self.name}"
