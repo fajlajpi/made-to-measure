@@ -53,6 +53,7 @@ class Block(models.Model):
     stop = models.ForeignKey(Stop, on_delete=models.CASCADE)
     order = models.PositiveSmallIntegerField()
     keywords = models.ManyToManyField(Keyword)
+    skippable = models.BooleanField(default=True)
     text = models.TextField()
     # audio TODO: Look up how to upload sound clips to blocks and construct the tour out of them
 
