@@ -10,11 +10,20 @@ class Location(models.Model):
     latitude = models.DecimalField(decimal_places=6, max_digits=9)
     longitude = models.DecimalField(decimal_places=6, max_digits=9)
 
+    def __str__(self):
+        return self.name
+
 class Category(models.Model):
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
 class Keyword(models.Model):
     name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
 
 class Tour(models.Model):
     name = models.CharField(max_length=200)
@@ -26,12 +35,18 @@ class Tour(models.Model):
     description = models.TextField()
     length = models.DecimalField(decimal_places=2, max_digits=4)
 
+    def __str__(self):
+        return self.name_short
+
 class Stop(models.Model):
     name = models.CharField(max_length=200)
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     description = models.TextField
     order = models.SmallIntegerField()
+
+    def __str__(self):
+        return self.name
 
 class Block(models.Model):
     name = models.CharField(max_length=200)
@@ -40,3 +55,6 @@ class Block(models.Model):
     keywords = models.ManyToManyField(Keyword)
     text = models.TextField()
     # audio TODO: Look up how to upload sound clips to blocks and construct the tour out of them
+
+    def __str__(self):
+        return self.name
