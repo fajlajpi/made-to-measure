@@ -9,5 +9,12 @@
                 <li><strong>Categories</strong>: {{ tour.categories }}</li>
             </ul>
             <p>{{ tour.description|linebreaksbr }}</p>
+            <h3>Customise the tour</h3>
+            <form action="view/" method="get">
+                {{ tour_options_form }}
+                <label for="chbtest">Test checkbox:</label><br>
+                <input type="checkbox" id="chbtest" name="chbtest"><br>
+                <input type="submit" value="Get your tour!">
+            </form>
         </article>
 {% endblock %}
