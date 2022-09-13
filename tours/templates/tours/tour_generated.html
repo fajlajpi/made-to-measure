@@ -9,12 +9,9 @@
                 <li><strong>Categories</strong>: {{ tour.categories }}</li>
             </ul>
             <p>{{ tour.description|linebreaksbr }}</p>
-            <h3>Customise the tour</h3>
-            <form action="{{ tour.pk }}/generate/" method="get">
-                {% for keyword in keywords %}
-                <input type="checkbox" id="kw-{{ keyword.pk }}" name="kw-{{ keyword.pk }}"><label for="kw-{{ keyword.pk }}">{{ keyword.name }}</label><br>
-                {% endfor %}
-                <br><input type="submit" value="Get your tour!">
-            </form>
+            <h3>Text of the tour follows</h3>
+            {% for block in blocks %}
+            <strong>{{ block.name }}</strong><br><p>{{ block.text|linebreaksbr }}</p><br>
+            {% endfor %}
         </article>
 {% endblock %}

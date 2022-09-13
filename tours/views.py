@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 
-from .models import Tour
+from .models import Tour, Stop, Block, Keyword
 
 # Create your views here.
 
@@ -11,8 +11,31 @@ def tours_list(request):
 
 def tour_detail(request, pk):
     tour = get_object_or_404(Tour, pk=pk)
-    return render(request, 'tours/tour_detail.html', {'tour': tour})
+    stops = Stop.objects.filter(tour=tour.pk)
+    blocks = Block.objects.filter(stop__in=stops)
+    block_keyword_list = []
+    for block in blocks:
+        for kw in block.keywords.all():
+            block_keyword_list.append(kw)
+    return render(request, 'tours/tour_detail.html', {'tour': tour, 'keywords': block_keyword_list,})
 
 def test_view(request):
     html = "<html><body><h1>TEST</h1></body></html>"
     return HttpResponse(html)
+
+def tour_generated(request, pk):
+    tour = get_object_or_404(Tour, pk=pk)
+    picked_keywords = []
+    print(request.GET.dict().keys())
+    for id in request.GET.dict().keys():
+        if str(id).startswith('kw-'):
+            picked_keywords.append(int(str(id)[3:]))
+    stops = Stop.objects.filter(tour=tour.pk)
+    unskippable_blocks = Block.objects.filter(stop__in=stops, skippable=False)
+    picked_blocks = Block.objects.filter(stop__in=stops, keywords__id__in=picked_keywords)
+    blocks = unskippable_blocks | picked_blocks
+    blocks = blocks.order_by('stop__order', 'order')
+
+    # TODO: Pass the blocks not as one list, but grouped by stop
+    #  so that we can, in the template, write individual stop information as well
+    return render(request, 'tours/tour_generated.html', {'tour': tour, 'blocks': blocks,})
