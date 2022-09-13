@@ -31,8 +31,8 @@ def tour_generated(request, pk):
         if str(id).startswith('kw-'):
             picked_keywords.append(int(str(id)[3:]))
     stops = Stop.objects.filter(tour=tour.pk)
-    unskippable_blocks = Block.objects.filter(stop__in=stops, skippable=False)
-    picked_blocks = Block.objects.filter(stop__in=stops, keywords__id__in=picked_keywords)
+    unskippable_blocks = Block.objects.filter(stop__in=stops, skippable=False).distinct()
+    picked_blocks = Block.objects.filter(stop__in=stops, keywords__id__in=picked_keywords).distinct()
     blocks = unskippable_blocks | picked_blocks
     blocks = blocks.order_by('stop__order', 'order')
 
