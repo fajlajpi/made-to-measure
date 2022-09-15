@@ -12,7 +12,7 @@
             <h3>Customise the tour</h3>
             <form action="{{ tour.pk }}/generate/" method="get">
                 {% for keyword in keywords %}
-                <input type="checkbox" id="kw-{{ keyword.pk }}" name="kw-{{ keyword.pk }}"><label for="kw-{{ keyword.pk }}">{{ keyword.name }}</label><br>
+                <input type="checkbox" id="kw-{{ keyword.pk }}" name="kw-{{ keyword.pk }}" value="{{ keyword.pk }}"><label for="kw-{{ keyword.pk }}">{{ keyword.name }}</label><br>
                 {% endfor %}
                 <br><input type="submit" value="Get your tour!">
             </form>

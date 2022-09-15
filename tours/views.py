@@ -27,9 +27,9 @@ def tour_generated(request, pk):
     tour = get_object_or_404(Tour, pk=pk)
     picked_keywords = []
     print(request.GET.dict().keys())
-    for id in request.GET.dict().keys():
-        if str(id).startswith('kw-'):
-            picked_keywords.append(int(str(id)[3:]))
+    for name, value in request.GET.items():
+        if name.startswith('kw-'):
+            picked_keywords.append(int(value))
     stops = Stop.objects.filter(tour=tour.pk)
     unskippable_blocks = Block.objects.filter(stop__in=stops, skippable=False).distinct()
     picked_blocks = Block.objects.filter(stop__in=stops, keywords__id__in=picked_keywords).distinct()
