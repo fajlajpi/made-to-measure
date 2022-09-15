@@ -15,8 +15,8 @@ def tour_detail(request, pk):
     blocks = Block.objects.filter(stop__in=stops)
     block_keyword_list = []
     for block in blocks:
-        for kw in block.keywords.all():
-            block_keyword_list.append(kw)
+        block_keyword_list.extend(block.keywords.all())
+    block_keyword_list = list(set(block_keyword_list))
     return render(request, 'tours/tour_detail.html', {'tour': tour, 'keywords': block_keyword_list,})
 
 def test_view(request):
