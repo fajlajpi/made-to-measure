@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpRequest
+from django.db.models import Q
 
 from .models import Tour, Stop, Block, Keyword
 
@@ -31,10 +32,7 @@ def tour_generated(request, pk):
         if name.startswith('kw-'):
             picked_keywords.append(int(value))
     stops = Stop.objects.filter(tour=tour.pk)
-    unskippable_blocks = Block.objects.filter(stop__in=stops, skippable=False).distinct()
-    picked_blocks = Block.objects.filter(stop__in=stops, keywords__id__in=picked_keywords).distinct()
-    blocks = unskippable_blocks | picked_blocks
-    blocks = blocks.order_by('stop__order', 'order')
+    blocks = Block.objects.filter(Q(stop__in=stops, skippable=False) | Q(stop__in=stops, keywords__id__in=picked_keywords)).order_by('stop__order', 'order').distinct()
 
     # TODO: Pass the blocks not as one list, but grouped by stop
     #  so that we can, in the template, write individual stop information as well
